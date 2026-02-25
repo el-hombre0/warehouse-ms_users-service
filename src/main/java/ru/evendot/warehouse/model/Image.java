@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import java.sql.Blob;
 
@@ -19,8 +20,9 @@ public class Image {
     private String fileName;
     private String fileType;
 
-    @Lob
-    private Blob blob;
+//    @Lob
+//    private Blob blob;
+    private String path;
     private String downloadUrl;
 
     @ManyToOne

@@ -1,5 +1,32 @@
 spring:
   application:
-    name: warehouse_server
-  config:
-    import: db.yml
+    name: microservice-users
+    microservice-orders:
+      url: https://localhost:8080/api/v1/orders
+
+  data:
+    datasource:
+      username: dbadmin
+      password: qwerty
+      url: jdbc:postgresql://127.0.0.1:5430/warehousedb
+    jpa:
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+          format_sql: true
+      hibernate:
+        ddl-auto: create
+      defer-datasource-initialization: true
+      show-sql: true
+
+server:
+  port: 8080
+  servlet:
+    context-path: /users
+#  config:
+#    import: db.yml
+  kafka:
+    bootstrap-servers: localhost:9092
+file:
+  upload-dir: /home/stas/Images/WareHouseStorage
+

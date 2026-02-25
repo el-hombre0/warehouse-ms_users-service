@@ -1,7 +1,16 @@
 version: "3.8"
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: warehouse_app
+    ports:
+      - "8080:8080"
+    volumes:
+      - images_storage:/app/data/images
   db:
-    container_name: warehousedb
+    container_name: warehouse_db
     image: postgres:latest
     ports:
       - "5430:5432"
@@ -9,3 +18,11 @@ services:
       - POSTGRES_USER=dbadmin
       - POSTGRES_PASSWORD=qwerty
       - POSTGRES_DB=warehousedb
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+volumes:
+  images_storage:
+    driver: local

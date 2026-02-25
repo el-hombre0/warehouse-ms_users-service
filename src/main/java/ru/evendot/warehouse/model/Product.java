@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Entity
@@ -23,8 +24,8 @@ public class Product {
     private String description;
     private Double price;
 
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Image> image;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images;
 
     private Boolean inStock;
     private Integer sale;
@@ -41,13 +42,15 @@ public class Product {
 //    private Category category;
 
     //    public Product(String title, Long article, String description, Double price, Boolean inStock, Integer sale, Timestamp timeInsert, Timestamp timeUpdate, int inventory, Category category) {
-    public Product(String title, Long article, String description, Double price, Boolean inStock, Integer sale, Timestamp timeInsert, Timestamp timeUpdate, int inventory) {
+    public Product(String title, Long article, String description, Double price, List<Image> images, Boolean inStock,
+                   Integer sale, Timestamp timeInsert, Timestamp timeUpdate, int inventory) {
         this.title = title;
         this.article = article;
         this.description = description;
         this.price = price;
         this.inStock = inStock;
         this.sale = sale;
+        this.images = images;
         this.timeInsert = timeInsert;
         this.timeUpdate = timeUpdate;
         this.inventory = inventory;

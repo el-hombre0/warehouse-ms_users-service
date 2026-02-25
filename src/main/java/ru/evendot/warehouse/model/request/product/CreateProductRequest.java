@@ -3,6 +3,9 @@ package ru.evendot.warehouse.model.request.product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.evendot.warehouse.model.Image;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -12,7 +15,7 @@ public class CreateProductRequest {
     private Long article;
     private String description;
     private Double price;
-//    private List<Image> image;
+    private List<Image> images;
     private Boolean inStock;
     private Integer sale;
     private int inventory;

@@ -37,20 +37,21 @@ public class CartItemServiceImpl implements CartItemService {
     public void addItemToCart(Long cartId, Long productId, int quantity) {
         Cart cart = cartService.getCart(cartId);
         Product product = productService.getProductById(productId);
+        // Среди всех cartItem'ов ищем тот, который содержит указанный продукт, иначе создаем новый cartItem
         CartItem cartItem = cart.getCartItems()
                 .stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst().orElse(new CartItem());
 
+        // Если cartItem, содержащий указанный продукт, не найден, то обрабатываем новый cartItem
         if (cartItem.getId() == null) {
             cartItem.setCart(cart);
             cartItem.setProduct(product);
             cartItem.setQuantity(quantity);
             cartItem.setUnitPrice(product.getPrice());
-//            cartItem.setTotalPrice();
-//            cart.addItem(cartItem);
-        } else { // Если товар уже лежит в корзине
-//            cartItem.setTotalPrice();
+        } else {
+            // Если cartItem, содержащий указанный продукт, найден (товар уже лежит в корзине),
+            // то увеличиваем его количество
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
         }
         cartItem.setTotalPrice();
@@ -58,7 +59,6 @@ public class CartItemServiceImpl implements CartItemService {
         cartItemRepo.save(cartItem);
         // Error Создается второй cartItem
         cartRepo.save(cart);
-//        cartRepo.updateCart(cart);
     }
 
     /**

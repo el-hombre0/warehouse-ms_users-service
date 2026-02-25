@@ -110,6 +110,7 @@ public class ProductServiceImpl implements ProductService {
                 request.getArticle(),
                 request.getDescription(),
                 request.getPrice(),
+                request.getImages(),
                 request.getInStock(),
                 request.getSale(),
                 creationTime,

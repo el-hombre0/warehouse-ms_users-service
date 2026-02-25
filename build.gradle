@@ -27,8 +27,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools
-//    implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '4.0.0-M3'
+//    // https://mvnrepository.com/artifact/org.springframework/org.springframework.web
+//    implementation group: 'org.springframework', name: 'org.springframework.web', version: '3.2.2.RELEASE'
+// Source: https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools
+	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '4.1.0-M1'
 	implementation 'org.projectlombok:lombok'
 //	testImplementation 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
@@ -43,6 +45,13 @@ dependencies {
 	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.18.2'
 	implementation group: 'com.fasterxml.uuid', name: 'java-uuid-generator', version: '5.1.0'
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.4'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '4.0.0'
+
+	// Source: https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka
+	implementation group: 'org.springframework.kafka', name: 'spring-kafka', version: '4.0.2'
+	// Source: https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka-test
+	testImplementation group: 'org.springframework.kafka', name: 'spring-kafka-test', version: '4.0.2'
 
 	//Documentation
 //	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
