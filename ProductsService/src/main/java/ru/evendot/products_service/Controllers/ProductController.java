@@ -62,4 +62,25 @@ public class ProductController {
                     "Product with id " + id + " not found!", e.getMessage()));
         }
     }
+
+    @GetMapping("/product/{id}/inventory")
+    public ResponseEntity<DataResponse> getProductInventory(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(new DataResponse("Product inventory received!", productService.getProductById(id).getInventory()));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status((HttpStatus.NOT_FOUND)).body(new DataResponse("Product with id " + id + " not found!", e.getMessage()));
+        }
+    }
+
+    @PatchMapping("/product/{id}/inventory")
+    public ResponseEntity<DataResponse> updateProductInventory(@PathVariable Long id, @RequestBody Integer inventory){
+        try {
+            return ResponseEntity.ok(new DataResponse("Product inventory updated!", productService.updateProductInventory(id, inventory).getInventory()));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status((HttpStatus.NOT_FOUND)).body(new DataResponse("Product with id " + id + " not found!", e.getMessage()));
+        }
+    }
+
+
+
 }

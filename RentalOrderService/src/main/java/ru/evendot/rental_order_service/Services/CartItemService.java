@@ -16,5 +16,5 @@ public interface CartItemService {
 
     CartItemDTO convertToCartItemDTO(CartItem cartItem);
 
-    UserDTO getUserById(Long userId);
+//    UserDTO getUserById(Long userId);
 }

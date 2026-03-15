@@ -1,22 +1,21 @@
 spring:
-  application:
-    name: products_service
-    microservice-user:
-      url: http://localhost:8080/api/v1/users
-    microservice-orders:
-      url: http://localhost:8081/api/v1/orders
-    datasource:
-      url: jdbc:postgresql://127.0.0.1:5434/products_service_db
-      username: productssadmin
-      password: productspassword
-
-    jpa:
+#  application:
+#    name: products_service
+  microservice-user:
+    url: http://localhost:8080/api/v1/users
+  microservice-orders:
+    url: http://localhost:8081/api/v1/orders
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5434/products_service_db
+    username: productssadmin
+    password: productspassword
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
       hibernate:
-        ddl-auto: update
-      show-sql: true
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.PostgreSQLDialect
-          format_sql: true
-
-
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+server:
+  port: 8082

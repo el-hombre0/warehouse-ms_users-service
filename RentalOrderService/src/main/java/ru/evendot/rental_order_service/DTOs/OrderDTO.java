@@ -21,5 +21,5 @@ public class OrderDTO {
     private String comment;
     private Timestamp timeCreation;
     private OrderStatus orderStatus;
-//    private AddressDTO address;
+    private Long rentalPointId;
 }

@@ -32,10 +32,10 @@ import ru.evendot.rental_order_service.Services.UserDTOService;
 public class CartItemServiceImpl implements CartItemService {
     private final CartItemRepository cartItemRepo;
     private final CartRepository cartRepo;
-    private final ProductService productService;
+//    private final ProductService productService;
     private final ProductDTOService productDTOService;
     private final CartService cartService;
-    private final UserDTOService userDTOService;
+//    private final UserDTOService userDTOService;
     private final ModelMapper modelMapper;
 
 
@@ -56,15 +56,17 @@ public class CartItemServiceImpl implements CartItemService {
         // Среди всех cartItem'ов ищем тот, который содержит указанный продукт, иначе создаем новый cartItem
         CartItem cartItem = cart.getCartItems()
                 .stream()
-                .filter(item -> item.getProduct().getId().equals(productId))
+//                .filter(item -> item.getProductDTO().getId().equals(productId))
+                .filter(item -> item.getProductId().equals(productId))
                 .findFirst().orElse(new CartItem());
 
         // Если cartItem, содержащий указанный продукт, не найден, то обрабатываем новый cartItem
         if (cartItem.getId() == null) {
             cartItem.setCart(cart);
-            cartItem.setProduct(product);
+//            cartItem.setProduct(product);
+            cartItem.setProductId(productDTO.getId());
             cartItem.setQuantity(quantity);
-            cartItem.setUnitPrice(product.getPrice());
+            cartItem.setUnitPrice(productDTO.getPrice());
         } else {
             // Если cartItem, содержащий указанный продукт, найден (товар уже лежит в корзине),
             // то увеличиваем его количество
@@ -99,14 +101,18 @@ public class CartItemServiceImpl implements CartItemService {
      */
     @Override
     public void updateItemQuantity(Long cartId, Long productId, int quantity) {
+        ProductDTO productDTO = productDTOService.getProductById(productId);
+
         Cart cart = cartService.getCart(cartId);
         cart.getCartItems()
                 .stream()
-                .filter(item -> item.getProduct().getId().equals(productId))
+                .filter(item -> item.getProductId().equals(productId))
+//                .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst()
                 .ifPresent(item -> {
                     item.setQuantity(quantity);
-                    item.setUnitPrice(item.getProduct().getPrice());
+//                    item.setUnitPrice(item.getProduct().getPrice());
+                    item.setUnitPrice(item.getUnitPrice());
                     item.setTotalPrice();
                 });
         Double totalAmount = cart.getCartItems()
@@ -121,7 +127,8 @@ public class CartItemServiceImpl implements CartItemService {
         Cart cart = cartService.getCart(cartId);
         return cart.getCartItems()
                 .stream()
-                .filter(item -> item.getProduct().getId().equals(productId))
+//                .filter(item -> item.getProduct().getId().equals(productId))
+                .filter(item -> item.getProductId().equals(productId))
                 .findFirst().orElseThrow(() -> new ResourceNotFoundException("Item not found!"));
     }
 
@@ -130,20 +137,20 @@ public class CartItemServiceImpl implements CartItemService {
         return modelMapper.map(cartItem, CartItemDTO.class);
     }
 
-    public UserDTO getUserById(Long userId){
-        String url = USER_SERVICE_URL + "/" + userId;
-
-        try {
-            ResponseEntity<DataResponse> dataResponse = restTemplate.getForEntity(url, DataResponse.class);
-            return userDTOService.convertToUserDTO(dataResponse.getBody());
-        }
-        catch (HttpClientErrorException.NotFound e){
-            System.out.println("User with id: " + userId + " not found: " + e.getMessage() );
-        }
-        catch (RestClientException e){
-            System.out.println("Error fetching data: " + e.getMessage());
-            return null;
-        }
-
-    }
+//    public UserDTO getUserById(Long userId){
+//        String url = USER_SERVICE_URL + "/" + userId;
+//
+//        try {
+//            ResponseEntity<DataResponse> dataResponse = restTemplate.getForEntity(url, DataResponse.class);
+//            return userDTOService.convertToUserDTO(dataResponse.getBody());
+//        }
+//        catch (HttpClientErrorException.NotFound e){
+//            System.out.println("User with id: " + userId + " not found: " + e.getMessage() );
+//        }
+//        catch (RestClientException e){
+//            System.out.println("Error fetching data: " + e.getMessage());
+//            return null;
+//        }
+//
+//    }
 }

@@ -2,6 +2,7 @@ package ru.evendot.rental_order_service.Services.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -14,18 +15,19 @@ import ru.evendot.rental_order_service.Services.UserDTOService;
 @Service
 @RequiredArgsConstructor
 public class UserDTOServiceImpl implements UserDTOService {
-    private ModelMapper modelMapper;
-    private RestTemplate restTemplate;
-    private final String USER_SERVICE_URL = "http://localhost:8080/api/v1/users";
-
+    private final ModelMapper modelMapper = new ModelMapper();
+    @Value("${spring.microservice-users.url}")
+    private String microserviceUsersURL;
 
     @Override
-    public UserDTO convertToUserDTO(DataResponse dataResponse) {
-        return modelMapper.map(dataResponse.getObject(), UserDTO.class);
+    public UserDTO convertToUserDTO(Object object) {
+        return modelMapper.map(object, UserDTO.class);
     }
 
+    @Override
     public UserDTO getUserById(Long userId){
-        String url = USER_SERVICE_URL + "/" + userId;
+        RestTemplate restTemplate = new RestTemplate();
+        String url = microserviceUsersURL + "/" + userId;
 
         try {
             ResponseEntity<DataResponse> dataResponse = restTemplate.getForEntity(url, DataResponse.class);

@@ -27,12 +27,12 @@ public class Order {
     private Set<OrderItem> orderItems = new HashSet<>();
 
 //    @Enumerated(EnumType.STRING)
-//    private PaymentMethod paymentMethod;
-    private Long paymentMethod;
+    private PaymentMethod paymentMethod;
+//    private Long paymentMethod;
 
 //    @Enumerated(EnumType.STRING)
-//    private PaymentStatus paymentStatus;
-    private Long paymentStatus;
+    private PaymentStatus paymentStatus;
+//    private Long paymentStatus;
 
 //    @ManyToOne
 //    @JoinColumn(name = "user_id")
@@ -48,5 +48,5 @@ public class Order {
 //    @OneToOne
 //    @JoinColumn(name = "address_id")
 //    private Address address;
-    private Long addressId;
+    private Long rentalPointId;
 }

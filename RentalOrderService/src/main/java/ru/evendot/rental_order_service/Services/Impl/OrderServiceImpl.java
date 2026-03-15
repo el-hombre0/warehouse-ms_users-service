@@ -5,10 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import ru.evendot.rental_order_service.DTOs.OrderDTO;
+import ru.evendot.rental_order_service.DTOs.Product.ProductDTO;
 import ru.evendot.rental_order_service.Exceptions.ResourceNotFoundException;
 import ru.evendot.rental_order_service.Models.*;
 import ru.evendot.rental_order_service.Repositories.OrderRepository;
-import ru.evendot.rental_order_service.Repositories.impl.ProductRepositoryImpl;
+//import ru.evendot.rental_order_service.Repositories.impl.ProductRepositoryImpl;
 import ru.evendot.rental_order_service.Services.OrderService;
 
 import java.sql.Timestamp;
@@ -20,8 +21,9 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final ProductRepositoryImpl productRepository;
+//    private final ProductRepositoryImpl productRepository;
     private final CartServiceImpl cartService;
+    private final ProductDTOServiceImpl productDTOService;
     private final ModelMapper modelMapper;
 
     @Override
@@ -63,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(OrderStatus.PENDING);
 
         // TODO временно
-        order.setAddress(null);
+        order.setRentalPointId(null);
 
         Order savedOrder = orderRepository.save(order);
 
@@ -81,7 +83,7 @@ public class OrderServiceImpl implements OrderService {
     private Order createOrder(Cart cart) {
         Order order = new Order();
         order.setOrderStatus(OrderStatus.PENDING);
-        order.setUser(cart.getUser());
+        order.setUserId(cart.getUserId());
 //        LocalDate timeNow = LocalDate.now();
 //        order.setTimeCreation(Timestamp.valueOf(timeNow.atStartOfDay()));
         order.setUuid(Generators.timeBasedGenerator().generate());
@@ -100,11 +102,16 @@ public class OrderServiceImpl implements OrderService {
      */
     private List<OrderItem> createOrderItems(Order order, Cart cart) {
         return cart.getCartItems().stream().map(cartItem -> {
-            Product product = cartItem.getProduct();
+//            ProductDTO product = cartItem.getProductId();
+            ProductDTO productDTO = productDTOService.getProductById(cartItem.getProductId());
+
             //TODO make an in stock products amount checking
-            product.setInventory(product.getInventory() - cartItem.getQuantity());
-            productRepository.save(product);
-            return new OrderItem(order, product, cartItem.getQuantity(), cartItem.getUnitPrice());
+//            product.setInventory(product.getInventory() - cartItem.getQuantity());
+            int productInventory = productDTOService.getProductInventory(productDTO.getId()) - cartItem.getQuantity();
+//            productDTO.set
+//            productRepository.save(product);
+            productDTOService.updateProductInventory(productDTO.getId(), productInventory);
+            return new OrderItem(order, productDTO.getId(), cartItem.getQuantity(), cartItem.getUnitPrice());
         }).toList();
     }
 

@@ -191,4 +191,22 @@ public class ProductServiceImpl implements ProductService {
         existingProduct.setInventory(request.getInventory());
         return existingProduct;
     }
+
+    private Product updateExistingProductInventory(Product existingProduct, int inventory){
+        existingProduct.setInventory(inventory);
+        existingProduct.setTimeUpdate(new Timestamp(System.currentTimeMillis()));
+        return existingProduct;
+    }
+
+    @Override
+    public Product updateProductInventory(Long productId, int inventory){
+
+        Optional<Product> optionalProduct = productRepositoryImpl.findById(productId);
+        Product existingProduct = optionalProduct.orElseThrow(
+                () -> new ResourceNotFoundException("Product with id:" + productId + "doesn't exist."));
+        Product savedProduct = updateExistingProductInventory(existingProduct, inventory);
+        productRepositoryImpl.updateById(productId, savedProduct);
+        return savedProduct;
+
+    }
 }
